@@ -1,0 +1,20 @@
+{
+  "name": "fox-4th-bday",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "budo src/index.js --dir public --live"
+  },
+  "keywords": [],
+  "author": "David Guttman <david@guttman.io> (http://davidguttman.com/)",
+  "license": "MIT",
+  "dependencies": {
+    "budo": "^11.8.4",
+    "nanohtml": "^1.10.0",
+    "serve": "^14.2.3"
+  },
+  "devDependencies": {
+    "standard": "^17.1.2"
+  }
+}
