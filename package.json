@@ -11,6 +11,8 @@
   "license": "MIT",
   "dependencies": {
     "budo": "^11.8.4",
+    "canvas-sketch-util": "^1.10.0",
+    "eases": "^1.0.8",
     "nanohtml": "^1.10.0",
     "nanomorph": "^5.4.3",
     "serve": "^14.2.3",

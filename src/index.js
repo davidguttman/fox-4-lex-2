@@ -1,6 +1,12 @@
 const html = require('nanohtml')
 const morph = require('nanomorph')
-const { easeInOutCubic } = require('tween-functions')
+const easeInOutCubic = require('eases/cubic-in-out')
+const {
+  // lerp,
+  clamp01,
+  inverseLerp,
+  fract
+} = require('canvas-sketch-util/math')
 // tweenFunction.tweenName(currentTime, beginValue, endValue, totalDuration)
 
 const div = render()
@@ -18,7 +24,7 @@ function render () {
 
   const sceneHeight = window.innerHeight * 2
   const scene = Math.floor(scroll / sceneHeight)
-  const progress = scroll % sceneHeight / sceneHeight
+  const progress = fract(scroll / sceneHeight)
 
   const state = {
     scene,
@@ -39,41 +45,58 @@ function render () {
     "
       class="flex items-center justify-center"
     >
-      ${renderIntroText(state)}
+      ${renderDebug(state)} ${renderIntroText(state)}
     </div>
   `
 
   return div
 }
 
+function renderDebug (state) {
+  return html`
+    <div
+      style="position: fixed; top: 10px; left: 10px; color: #fff; font-size: 2vw; z-index: 1000"
+    >
+      ${state.scene}: ${state.progress.toFixed(2)}
+    </div>
+  `
+}
+
 function renderIntroText (state) {
   if (state.scene !== 0) return null
   const { progress } = state
 
-  const rotate = progress < 0.5
-    ? easeInOutCubic(progress, 0, 180, 0.5)
-    : 180
+  // 0 is 0, 0.3 is 1, don't go over 1
+  const pRotate = clamp01(inverseLerp(0, 0.3, progress))
+  const rotate = easeInOutCubic(pRotate) * 180
 
-  const yPos = progress > 0.3
-    ? easeInOutCubic(progress - 0.3, 0, -1, 0.3)
-    : 0
+  const pYPos = clamp01(inverseLerp(0.25, 1, progress))
+  const yPos = easeInOutCubic(pYPos)
+
+  const pScale = clamp01(inverseLerp(0.25, 1, progress))
+  const scale = easeInOutCubic(1 - pScale)
+
+  const pOpacity = clamp01(inverseLerp(0.25, 1, progress))
+  const opacity = easeInOutCubic(1 - pOpacity)
 
   return html`
     <div
       style="
         font-family: Roboto Flex, sans-serif;
-        font-size: 14vw;
+        font-size: 12vw;
         font-style: normal;
         font-variation-settings: 'wdth' 25, 'wght' 500, 'GRAD' -100;
         font-weight: 900;
         line-height: 0.9;
         text-transform: uppercase;
         color: #000;
-        transform: rotate(${rotate}deg) translateY(${yPos * 100}vh);
+        transform: rotate(${rotate}deg) translateY(${yPos *
+      75}vh) scale(${scale});
+        opacity: ${opacity};
       "
     >
-      <div style="">Fox is turning 4!</div>
-      <div style="transform: rotate(180deg)">Lex is turning 2!</div>
+      <div style="">Fox is 4!</div>
+      <div style="transform: rotate(180deg)">Lex is 2!</div>
     </div>
   `
 }
