@@ -9,6 +9,10 @@ const {
 } = require('canvas-sketch-util/math')
 // tweenFunction.tweenName(currentTime, beginValue, endValue, totalDuration)
 
+const START_SCENE = 0
+
+const scenes = [introText, joinUs]
+
 const div = render()
 document.body.appendChild(div)
 
@@ -19,11 +23,18 @@ function loop () {
   morph(div, render())
 }
 
+function renderScene (n, state) {
+  const scene = scenes[n]
+  if (!scene) return
+
+  return scene(state)
+}
+
 function render () {
   const scroll = window.scrollY
 
   const sceneHeight = window.innerHeight * 2
-  const scene = Math.floor(scroll / sceneHeight)
+  const scene = Math.floor(scroll / sceneHeight) + START_SCENE
   const progress = fract(scroll / sceneHeight)
 
   const state = {
@@ -42,10 +53,18 @@ function render () {
       background-color: #fcd8da;
       color: #fff;
       overflow: hidden;
+      font-family: Roboto Flex, sans-serif;
+      font-size: 12vw;
+      font-style: normal;
+      font-variation-settings: 'wdth' 25, 'wght' 500, 'GRAD' -100;
+      font-weight: 900;
+      line-height: 0.9;
+      text-transform: uppercase;
+      color: #000;
     "
       class="flex items-center justify-center"
     >
-      ${renderDebug(state)} ${renderIntroText(state)}
+      ${renderDebug(state)} ${renderScene(scene, state)}
     </div>
   `
 
@@ -62,8 +81,7 @@ function renderDebug (state) {
   `
 }
 
-function renderIntroText (state) {
-  if (state.scene !== 0) return null
+function introText (state) {
   const { progress } = state
 
   // 0 is 0, 0.3 is 1, don't go over 1
@@ -82,14 +100,6 @@ function renderIntroText (state) {
   return html`
     <div
       style="
-        font-family: Roboto Flex, sans-serif;
-        font-size: 12vw;
-        font-style: normal;
-        font-variation-settings: 'wdth' 25, 'wght' 500, 'GRAD' -100;
-        font-weight: 900;
-        line-height: 0.9;
-        text-transform: uppercase;
-        color: #000;
         transform: rotate(${rotate}deg) translateY(${yPos *
       75}vh) scale(${scale});
         opacity: ${opacity};
@@ -97,6 +107,52 @@ function renderIntroText (state) {
     >
       <div style="">Fox is 4!</div>
       <div style="transform: rotate(180deg)">Lex is 2!</div>
+    </div>
+  `
+}
+
+function joinUs (state) {
+  const { progress } = state
+
+  const pXPos = progress
+  const xPos = 150 - pXPos * 400
+
+  const pOpacity = clamp01(inverseLerp(0.25, 0.4, progress))
+  const opacity = easeInOutCubic(pOpacity)
+
+  const pLight = pOpacity
+  const light = easeInOutCubic(pLight)
+
+  return html`
+    <div
+      style="
+        height: 100vh;
+        width: 100vw;
+    "
+    >
+      
+      <div
+        style="
+        background-image: url(/mj-1.png);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        opacity: ${opacity};
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      "
+      ></div>
+      <div
+        style="
+        white-space: nowrap;
+        transform: translateX(${xPos}vw) translateY(45vh);
+      "
+      >
+        <div style="color: hsl(0, 0%, ${light * 100}%)">Join us in the forest for...</div>
+      </div>
     </div>
   `
 }
