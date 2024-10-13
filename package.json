@@ -12,7 +12,9 @@
   "dependencies": {
     "budo": "^11.8.4",
     "nanohtml": "^1.10.0",
-    "serve": "^14.2.3"
+    "nanomorph": "^5.4.3",
+    "serve": "^14.2.3",
+    "tween-functions": "^1.2.0"
   },
   "devDependencies": {
     "standard": "^17.1.2"
