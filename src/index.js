@@ -62,7 +62,6 @@ function render () {
       text-transform: uppercase;
       color: #000;
     "
-      class="flex items-center justify-center"
     >
       ${renderDebug(state)} ${renderScene(scene, state)}
     </div>
@@ -85,28 +84,55 @@ function introText (state) {
   const { progress } = state
 
   // 0 is 0, 0.3 is 1, don't go over 1
-  const pRotate = clamp01(inverseLerp(0, 0.3, progress))
+  const pRotate = clamp01(inverseLerp(0, 0.65, progress))
   const rotate = easeInOutCubic(pRotate) * 180
 
-  const pYPos = clamp01(inverseLerp(0.25, 1, progress))
+  const pYPos = clamp01(inverseLerp(0, 1, progress))
   const yPos = easeInOutCubic(pYPos)
 
-  const pScale = clamp01(inverseLerp(0.25, 1, progress))
-  const scale = easeInOutCubic(1 - pScale)
+  // const pScale = clamp01(inverseLerp(0.25, 1, progress))
+  // const scale = easeInOutCubic(1 - pScale)
+  const scale = 1
 
-  const pOpacity = clamp01(inverseLerp(0.25, 1, progress))
-  const opacity = easeInOutCubic(1 - pOpacity)
+  // const pOpacity = clamp01(inverseLerp(0.25, 1, progress))
+  // const opacity = easeInOutCubic(1 - pOpacity)
+  const opacity = 1
 
   return html`
+  <div
+    style="
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      transform: translateY(${-yPos *
+      100}vh)
+    "
+  >
     <div
       style="
-        transform: rotate(${rotate}deg) translateY(${yPos *
-      75}vh) scale(${scale});
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #fcd8da;
+      "
+    >
+        <img src="d-1.webp" style="width: 100%; height: 80%; object-fit: cover;">
+    </div>
+    <div
+      style="
+        font-size: 20vw;
+        transform: rotate(${rotate}deg) scale(${scale});
         opacity: ${opacity};
       "
     >
       <div style="">Fox is 4!</div>
       <div style="transform: rotate(180deg)">Lex is 2!</div>
+      </div>
     </div>
   `
 }
