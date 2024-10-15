@@ -3,9 +3,9 @@ const morph = require('nanomorph')
 const eases = require('eases')
 const { lerp, clamp01, inverseLerp, fract } = require('canvas-sketch-util/math')
 
-const START_SCENE = 0
+const START_SCROLL = 0
 
-const scenes = [introText, joinUs]
+const scenes = [introText, details]
 
 const div = render()
 document.body.appendChild(div)
@@ -26,7 +26,7 @@ function renderScene (n, state) {
 
 function render () {
   // const scroll = window.scrollY
-  const scroll = 2800 + window.scrollY
+  const scroll = START_SCROLL + window.scrollY
 
   const sceneHeight = window.innerHeight * 4
   const scene = 0 // Math.floor(scroll / sceneHeight) + START_SCENE
@@ -59,7 +59,7 @@ function render () {
       color: #000;
     "
     >
-      ${renderDebug(state)} ${introText(state)} ${joinUs(state)}
+      ${renderDebug(state)} ${introText(state)} ${details(state)}
     </div>
   `
 
@@ -81,33 +81,33 @@ function renderDebug (state) {
 }
 
 function introText (state) {
-  const { progress } = state
+  const { progress, scroll } = state
 
-  const yPos = clamp01(eases.cubicInOut(inverseLerp(0, 0.2, progress)))
+  const yPos = clamp01(inverseLerp(0, 600, scroll))
 
-  const imgSize = clamp01(eases.cubicInOut(inverseLerp(0, 0.4, progress)))
+  const imgSize = clamp01(eases.cubicInOut(inverseLerp(0, 1200, scroll)))
 
   const fontSize = lerp(
     25,
     20,
-    clamp01(eases.cubicInOut(inverseLerp(0, 0.2, progress)))
+    clamp01(eases.cubicInOut(inverseLerp(0, 600, scroll)))
   )
 
   const opacity = lerp(
     1,
     0.5,
-    clamp01(eases.cubicInOut(inverseLerp(0.1, 0.3, progress)))
+    clamp01(eases.cubicInOut(inverseLerp(300, 900, scroll)))
   )
 
   const xPos = lerp(
     100,
     0,
-    clamp01(eases.cubicInOut(inverseLerp(0.3, 0.4, progress)))
+    clamp01(eases.cubicInOut(inverseLerp(900, 1200, scroll)))
   )
 
-  const andOpacity = clamp01(eases.cubicInOut(inverseLerp(0.35, 0.4, progress)))
+  const andOpacity = clamp01(eases.cubicInOut(inverseLerp(700, 1200, scroll)))
 
-  const yPosFull = clamp01(eases.cubicInOut(inverseLerp(0.4, 0.9, progress)))
+  const yPosFull = clamp01(inverseLerp(1200, 2700, scroll))
 
   return html`
     <div
@@ -118,6 +118,7 @@ function introText (state) {
         height: 100%;
         background-color: #000;
         top: ${-yPosFull * 100}%;
+        // box-shadow: 0px 0px 50px 10px rgba(0, 0, 0, 0.8);
       "
     >
       <div
@@ -208,8 +209,10 @@ function introText (state) {
   `
 }
 
-function joinUs (state) {
+function details (state) {
   const { progress } = state
+
+  const scale = clamp01(eases.cubicInOut(inverseLerp(0, 0.2, progress)))
 
   return html`
     <div style=
