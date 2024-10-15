@@ -320,7 +320,7 @@ function details (state) {
         text-shadow: 2px 2px 0px hotpink;
       "
         >
-          Fox and Lex
+          Fox + Lex
           <br />
           Birthday Party
         </div>
