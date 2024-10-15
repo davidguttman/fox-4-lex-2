@@ -137,11 +137,11 @@ function introText (state) {
       >
         <div>
           <div class="pt2">
-            Join us
+            Join Us
             <br />
             in the
             <br />
-            forest
+            Forest
             <br />
             <span style="
             font-size: 0.5em;
