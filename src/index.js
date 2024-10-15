@@ -47,7 +47,7 @@ function render () {
       color: #fff;
       overflow: hidden;
       font-family: Roboto Flex, sans-serif;
-      font-size: 12vw;
+      font-size: ${vwToPx('12vw')};
       font-style: normal;
       font-variation-settings: 'wdth' 25, 'wght' 500, 'GRAD' -100;
       font-weight: 900;
@@ -145,7 +145,7 @@ function introText (state) {
         left: 0;
         width: 100%;
         height: 100%;
-        font-size: ${fontSize}vw;
+        font-size: ${vwToPx(fontSize + 'vw')};
         text-align: center;
         "
       >
@@ -246,7 +246,7 @@ function details (state) {
     <div
       class="mb1"
       style="
-      font-size: 6vw;
+      font-size: ${vwToPx('6vw')};
       color: white;
       text-shadow: 2px 2px 0px hotpink;
     "
@@ -256,7 +256,7 @@ function details (state) {
   `
 
   const toAnswerEl = answer => html`
-    <div style="font-size: 5vw; line-height: 7vw;">${answer}</div>
+    <div style="font-size: ${vwToPx('5vw')}; line-height: ${vwToPx('7vw')};">${answer}</div>
   `
 
   const toSectionEl = (question, answer) => html`
@@ -274,7 +274,7 @@ function details (state) {
         href="${href}"
         target="_blank"
         style="
-      font-size: 6vw;
+      font-size: ${vwToPx('6vw')};
       border: 1px solid black;
       padding: 10px 20px;
       border-radius: 5px;
@@ -309,12 +309,12 @@ function details (state) {
         <div
           class="tc "
           style="
-        font-size: 15vw;
+        font-size: ${vwToPx('15vw')};
         color: black;
         text-shadow: 2px 2px 0px hotpink;
       "
         >
-          Fox and Lex’s
+          Fox and Lex
           <br />
           Birthday Party
         </div>
@@ -399,7 +399,7 @@ function details (state) {
           `
         )}
 
-        <div class="mt4" style="font-size: 3vw; line-height: 4vw;">
+        <div class="mt4" style="font-size: ${vwToPx('3vw')}; line-height: ${vwToPx('4vw')};">
           *We do not discriminate against forest creatures of any kind. Ghosts
           live in forests, as do witches, Disney Princesses, dinosaurs, bunny
           rabbits, and Pokemons.
@@ -411,4 +411,10 @@ function details (state) {
 
 function toGoogleDate (date) {
   return new Date(date).toISOString().split('.')[0].replace(/\W*/g, '') + 'Z'
+}
+
+function vwToPx (vwString) {
+  const vwValue = parseFloat(vwString)
+  const width = Math.min(window.outerWidth, 430)
+  return (vwValue / 100 * width) + 'px'
 }
