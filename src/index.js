@@ -221,11 +221,14 @@ function details (state) {
   const dateStart = new Date('2024-11-10T15:00:00')
   const dateEnd = new Date('2024-11-10T18:00:00')
 
-  const directions = 'Cedar Grove is a beautiful, shaded spot in Griffith Park, accessible by a short (but quite steep) hike.  Park on Farmouth Drive, walk through the gate at the end of the street, and haul up the hill for 3 out-of-breath minutes.  (You’ll want a carrier for small kids.)'
+  const directions =
+    'Cedar Grove is a beautiful, shaded spot in Griffith Park, accessible by a short (but quite steep) hike.  Park on Farmouth Drive, walk through the gate at the end of the street, and haul up the hill for 3 out-of-breath minutes.  (You’ll want a carrier for small kids.)'
 
-  const dressCode = 'Dress code is "Forest Creature". We do not discriminate against forest creatures of any kind.  Ghosts live in forests, as do witches, Disney Princesses, dinosaurs, bunny rabbits, and Pokemons.'
+  const dressCode =
+    'Dress code is "Forest Creature". We do not discriminate against forest creatures of any kind.  Ghosts live in forests, as do witches, Disney Princesses, dinosaurs, bunny rabbits, and Pokemons.'
 
-  const whatToBring = 'No presents, please!\nPicnic blanket, drinks, bag for dino eggs.\nWe will have light snacks.'
+  const whatToBring =
+    'No presents, please!\nPicnic blanket, drinks, bag for dino eggs.\nWe will have light snacks.'
 
   const calDetails = [directions, dressCode, whatToBring].join('\n\n')
 
@@ -233,7 +236,32 @@ function details (state) {
 
   // 20231110T150000Z
 
-  const calendarLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=Fox+and+Lex%27s+Birthday+Party&dates=${toGoogleDate(dateStart)}/${toGoogleDate(dateEnd)}&details=${encodeURIComponent(calDetails)}&location=${encodeURIComponent(location)}`
+  const calendarLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=Fox+and+Lex%27s+Birthday+Party&dates=${toGoogleDate(
+    dateStart
+  )}/${toGoogleDate(dateEnd)}&details=${encodeURIComponent(
+    calDetails
+  )}&location=${encodeURIComponent(location)}`
+
+  const toQuestionEl = question => html`
+    <div
+      class="mb1"
+      style="
+      font-size: 6vw;
+      color: white;
+      text-shadow: 2px 2px 0px hotpink;
+    "
+    >
+      ${question}
+    </div>
+  `
+
+  const toAnswerEl = answer => html`
+    <div style="font-size: 5vw; line-height: 7vw;">${answer}</div>
+  `
+
+  const toSectionEl = (question, answer) => html`
+    <div class="mt4">${toQuestionEl(question)} ${toAnswerEl(answer)}</div>
+  `
 
   return html`
     <div
@@ -264,93 +292,57 @@ function details (state) {
           <br />
           Birthday Party
         </div>
-        <div class="mt4">
-          <div
-            class="mb1"
-            style="
-          font-size: 6vw;
-          color: white;
-          text-shadow: 2px 2px 0px hotpink;
-        "
-          >
-            When is it?
-          </div>
-          <div style="font-size: 6vw;">
-            <a href="${calendarLink}" target="_blank" style="color: black; text-decoration: underline;">
+
+        ${toSectionEl(
+          'When is it?',
+          html`
+            <a
+              href="${calendarLink}"
+              target="_blank"
+              style="color: black; text-decoration: underline;"
+            >
               Sunday, November 10th
               <br />
               3:00 PM - 6:00 PM
             </a>
-          </div>
-        </div>
-        <div class="mt4">
-          <div
-            class="mb1"
-            style="
-          font-size: 6vw;
-          color: white;
-          text-shadow: 2px 2px 0px hotpink;
-        "
-          >
-            Where is it?
-          </div>
-          <div style="font-size: 6vw;">
+          `
+        )}
+
+        ${toSectionEl(
+          'Where is it?',
+          html`
             <a
               style="color: black; text-decoration: underline;"
               href="https://maps.app.goo.gl/WXPLY8jVwcY73REG6"
               target="_blank"
               >Cedar Grove</a
             >
-          </div>
-        </div>
-        <div class="mt4">
-          <div
-            class="mb1"
-            style="
-          font-size: 6vw;
-          color: white;
-          text-shadow: 2px 2px 0px hotpink;
-        "
-          >
-            What is the dress code?
-          </div>
-          <div style="font-size: 6vw;">Forest Creature</div>
-        </div>
-        <div class="mt4">
-          <div
-            class="mb1"
-            style="
-          font-size: 6vw;
-          color: white;
-          text-shadow: 2px 2px 0px hotpink;
-        "
-          >
-            What should I bring?
-          </div>
-          <div style="font-size: 6vw;">
+          `
+        )}
+
+        
+        ${toSectionEl(
+          'What is the dress code?',
+          'Forest Creature'
+        )}
+
+        ${toSectionEl(
+          'What should I bring?',
+          html`
             <div>No presents, please!</div>
             <div>Picnic blanket, drinks, bag for dino eggs.</div>
             <div>We will have light snacks.</div>
-          </div>
-        </div>
+          `
+        )}
 
-        <div class="mt4">
-          <div
-            class="mb1"
-            style="
-          font-size: 6vw;
-          color: white;
-          text-shadow: 2px 2px 0px hotpink;
-        "
-          >
-            Can you make it?
-          </div>
-          <div style="font-size: 6vw;">
+        ${toSectionEl(
+          'Can you make it?',
+          html`
             <a href="https://forms.gle/3961FARmOuthSt" target="_blank">Yes</a>
             -or-
             <a href="https://forms.gle/3961FARmOuthSt" target="_blank">No</a>
-          </div>
-        </div>
+          `
+        )}
       </div>
     </div>
   `
