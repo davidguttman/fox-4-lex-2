@@ -11,8 +11,6 @@ const {
 
 const START_SCROLL = 0
 
-const scenes = [introText, details]
-
 const div = render()
 document.body.appendChild(div)
 
@@ -21,13 +19,6 @@ window.requestAnimationFrame(loop)
 function loop () {
   window.requestAnimationFrame(loop)
   morph(div, render())
-}
-
-function renderScene (n, state) {
-  const scene = scenes[n]
-  if (!scene) return
-
-  return scene(state)
 }
 
 function render () {
@@ -73,6 +64,7 @@ function render () {
 }
 
 function renderDebug (state) {
+  if (window.location.hostname !== 'localhost') return ''
   return html`
     <div
       style="position: fixed; top: 10px; left: 10px; color: #fff; font-size: 2vw; z-index: 1000"
@@ -87,7 +79,7 @@ function renderDebug (state) {
 }
 
 function introText (state) {
-  const { progress, scroll } = state
+  const { scroll } = state
 
   const yPos = clamp01(inverseLerp(0, 600, scroll))
 
