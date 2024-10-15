@@ -11,6 +11,10 @@ const {
 
 const START_SCROLL = 0
 
+const state = {
+  showDirections: false
+}
+
 const div = render()
 document.body.appendChild(div)
 
@@ -29,11 +33,9 @@ function render () {
   const scene = 0 // Math.floor(scroll / sceneHeight) + START_SCENE
   const progress = fract(scroll / sceneHeight)
 
-  const state = {
-    scroll,
-    scene,
-    progress
-  }
+  state.scroll = scroll
+  state.scene = scene
+  state.progress = progress
 
   const div = html`
     <div
@@ -289,6 +291,10 @@ function details (state) {
     `
   }
 
+  function toggleDirections () {
+    state.showDirections = !state.showDirections
+  }
+
   return html`
     <div
       style="
@@ -327,34 +333,52 @@ function details (state) {
               <br />
               3:00 PM - 6:00 PM
               <br />
+              <div style="font-size: 0.7em;">
               <a
                 href="${calendarLink}"
                 target="_blank"
                 style="color: black; text-decoration: underline;"
               >
-                Add to Calendar
-              </a>
+                  Add to Calendar
+                </a>
+              </div>
             </div>
           `
         )}
         ${toSectionEl(
           'Where is it?',
           html`
-            <div>
-              <div>Cedar Grove</div>
-              <a
-                style="color: black; text-decoration: underline;"
-                href="https://maps.app.goo.gl/WXPLY8jVwcY73REG6"
-                target="_blank"
-                >View Map</a
-              >
-            </div>
+            Cedar Grove, Griffith Park
+            <br />
+            <div style="font-size: 0.7em;">
+            <a
+              href="https://maps.app.goo.gl/WXPLY8jVwcY73REG6"
+              target="_blank"
+              style="color: black; text-decoration: underline;"
             >
+              View Map
+            </a> - 
+            <a
+              onclick=${toggleDirections}
+              style="color: black; text-decoration: underline; cursor: pointer;"
+            >
+                Detailed Directions
+              </a>
+            </div>
+
+            ${state.showDirections
+? html`
+              <div style="font-size: 0.7em; line-height: 1.2em;" class='mw6 mt2'>
+                Cedar Grove is a beautiful, shaded spot in Griffith Park, accessible by a short (but quite steep) hike. Park on <a class='black' href="https://maps.app.goo.gl/DCfbEw6sMuFWNbrX7" 
+                target="_blank">Farmouth Drive</a>, walk through the gate at the end of the street, and haul up the hill for 3 out-of-breath minutes.  (You’ll want a carrier for small kids.)
+              </div>
+            `
+: ''}
           `
         )}
         ${toSectionEl(
           'What is the dress code?',
-          html` <div>Forest Creature*</div> `
+          html`Forest Creature*`
         )}
         ${toSectionEl(
           'What will we do?',
@@ -371,9 +395,11 @@ function details (state) {
         ${toSectionEl(
           'What should I bring?',
           html`
-            <div>Picnic blanket, drinks, bag for dinosaur eggs.</div>
-            <div>We will have light snacks.</div>
-            <div>No presents, please!</div>
+            Picnic blanket, drinks, bag for dinosaur eggs.
+            <br />
+            We will have light snacks.
+            <br />
+            No presents, please!
           `
         )}
         ${toSectionEl(
@@ -399,7 +425,7 @@ function details (state) {
           `
         )}
 
-        <div class="mt4" style="font-size: ${vwToPx('3vw')}; line-height: ${vwToPx('4vw')};">
+        <div class="mt4 mw6" style="font-size: ${vwToPx('3vw')}; line-height: ${vwToPx('4vw')};">
           *We do not discriminate against forest creatures of any kind. Ghosts
           live in forests, as do witches, Disney Princesses, dinosaurs, bunny
           rabbits, and Pokemons.
