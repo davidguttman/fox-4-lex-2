@@ -25,13 +25,15 @@ function renderScene (n, state) {
 }
 
 function render () {
-  const scroll = window.scrollY
+  // const scroll = window.scrollY
+  const scroll = 2800 + window.scrollY
 
   const sceneHeight = window.innerHeight * 4
-  const scene = Math.floor(scroll / sceneHeight) + START_SCENE
+  const scene = 0 // Math.floor(scroll / sceneHeight) + START_SCENE
   const progress = fract(scroll / sceneHeight)
 
   const state = {
+    scroll,
     scene,
     progress
   }
@@ -57,7 +59,7 @@ function render () {
       color: #000;
     "
     >
-      ${renderDebug(state)} ${renderScene(scene, state)}
+      ${renderDebug(state)} ${introText(state)} ${joinUs(state)}
     </div>
   `
 
@@ -70,6 +72,10 @@ function renderDebug (state) {
       style="position: fixed; top: 10px; left: 10px; color: #fff; font-size: 2vw; z-index: 1000"
     >
       ${state.scene}: ${state.progress.toFixed(2)}
+      <br />
+      ${window.scrollY}
+      <br />
+      ${window.innerWidth} x ${window.innerHeight}
     </div>
   `
 }
@@ -101,9 +107,18 @@ function introText (state) {
 
   const andOpacity = clamp01(eases.cubicInOut(inverseLerp(0.35, 0.4, progress)))
 
+  const yPosFull = clamp01(eases.cubicInOut(inverseLerp(0.4, 0.9, progress)))
+
   return html`
     <div
-      style="position: relative; width: 100%; height: 100%; background-color: #000"
+      style="
+        position: relative;
+        z-index: 900;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        top: ${-yPosFull * 100}%;
+      "
     >
       <div
         style="
@@ -113,7 +128,7 @@ function introText (state) {
         width: 100%;
         height: 100%;
         background-image: url(/d-1.webp);
-        background-position: 50% ${yPos * 100}%;
+        background-position: 50% ${yPosFull * 100}%;
         background-repeat: no-repeat;
         background-size: auto ${100 + (1 - imgSize) * 100}%;
         display: flex;
@@ -143,11 +158,13 @@ function introText (state) {
             <br />
             Forest
             <br />
-            <span style="
+            <span
+              style="
             font-size: 0.5em;
             opacity: ${andOpacity};
-            ">
-            for
+            "
+            >
+              for
             </span>
           </div>
         </div>
@@ -159,13 +176,15 @@ function introText (state) {
           >
             Fox's 4th
           </div>
-          <div style="
+          <div
+            style="
             color: hsl(0, 0%, 100%);
             font-size: 0.5em;
             line-height: 2em;
             text-shadow: 2px 2px 0px black;
             opacity: ${andOpacity};
-            ">
+            "
+          >
             &
           </div>
           <div
@@ -175,10 +194,12 @@ function introText (state) {
           >
             Lex's 2nd
           </div>
-          <div style="
+          <div
+            style="
             padding-top: 0.5em;
             opacity: ${andOpacity};
-          ">
+          "
+          >
             Birthday Party
           </div>
         </div>
@@ -190,38 +211,69 @@ function introText (state) {
 function joinUs (state) {
   const { progress } = state
 
-  const pXPos = progress
-  const xPos = 150 - pXPos * 400
-
-  const pOpacity = clamp01(inverseLerp(0.25, 0.4, progress))
-  const opacity = easeInOutCubic(pOpacity)
-
-  const pLight = pOpacity
-  const light = easeInOutCubic(pLight)
-
   return html`
-    <div
-      style="
-        height: 100vh;
-        width: 100vw;
+    <div style=
     "
+      position: absolute;
+      z-index: 800;
+      width: 100%;
+      height: 100%;
+      color: #000;
+      top: 0;  
+    "
+    class="pa4"
     >
-      <div
-        style="
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-      "
-      ></div>
-      <div
-        style="
-        white-space: nowrap;
-        transform: translateX(${xPos}vw) translateY(45vh);
-      "
-      >
-        <div style="color: hsl(0, 0%, ${light * 100}%)">Fox's 4th</div>
+      <div class='tc pt2' style='
+        font-size: 15vw;
+        color: black;
+        text-shadow: 2px 2px 0px hotpink;
+      '>
+        Fox and Lex's
+        <br />
+        Birthday Party
+      </div>
+      <div class='mt4'>
+        <div class='mb3' style='
+          font-size: 6vw;
+          color: white;
+          text-shadow: 2px 2px 0px hotpink;
+        '>When is it?</div>
+        <div style='font-size: 6vw;'>
+          Sunday, November 10th
+          <br />
+          3:00 PM - 6:00 PM
+        </div>
+      </div>
+      <div class='mt4'>
+        <div class='mb3' style='
+          font-size: 6vw;
+          color: white;
+          text-shadow: 2px 2px 0px hotpink;
+        '>Where is it?</div>
+        <div style='font-size: 6vw;'>
+          <a style='color: black; text-decoration: underline;' href='https://maps.app.goo.gl/3961FarmouthSt' target='_blank'>Cedar Grove</a>
+        </div>
+      </div>
+      <div class='mt4'>
+        <div class='mb3' style='
+          font-size: 6vw;
+          color: white;
+          text-shadow: 2px 2px 0px hotpink;
+        '>What is the dress code?</div>
+        <div style='font-size: 6vw;'>
+          Forest Creature
+        </div>
+      </div>
+      <div class='mt4'>
+        <div class='mb3' style='
+          font-size: 6vw;
+          color: white;
+          text-shadow: 2px 2px 0px hotpink;
+        '>What should I bring?</div>
+        <div style='font-size: 6vw;'>
+          <p>Picnic blanket, drinks, bag for dino eggs.</p>
+          <p>We will have light snacks.</p>
+        </div>
       </div>
     </div>
   `
