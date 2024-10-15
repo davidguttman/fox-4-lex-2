@@ -1,13 +1,7 @@
 const html = require('nanohtml')
 const morph = require('nanomorph')
-const easeInOutCubic = require('eases/cubic-in-out')
-const {
-  // lerp,
-  clamp01,
-  inverseLerp,
-  fract
-} = require('canvas-sketch-util/math')
-// tweenFunction.tweenName(currentTime, beginValue, endValue, totalDuration)
+const eases = require('eases')
+const { lerp, clamp01, inverseLerp, fract } = require('canvas-sketch-util/math')
 
 const START_SCENE = 0
 
@@ -33,7 +27,7 @@ function renderScene (n, state) {
 function render () {
   const scroll = window.scrollY
 
-  const sceneHeight = window.innerHeight * 2
+  const sceneHeight = window.innerHeight * 4
   const scene = Math.floor(scroll / sceneHeight) + START_SCENE
   const progress = fract(scroll / sceneHeight)
 
@@ -59,7 +53,7 @@ function render () {
       font-variation-settings: 'wdth' 25, 'wght' 500, 'GRAD' -100;
       font-weight: 900;
       line-height: 0.9;
-      text-transform: uppercase;
+      // text-transform: uppercase;
       color: #000;
     "
     >
@@ -83,55 +77,111 @@ function renderDebug (state) {
 function introText (state) {
   const { progress } = state
 
-  // 0 is 0, 0.3 is 1, don't go over 1
-  const pRotate = clamp01(inverseLerp(0, 0.65, progress))
-  const rotate = easeInOutCubic(pRotate) * 180
+  const yPos = clamp01(eases.cubicInOut(inverseLerp(0, 0.2, progress)))
 
-  const pYPos = clamp01(inverseLerp(0, 1, progress))
-  const yPos = easeInOutCubic(pYPos)
+  const imgSize = clamp01(eases.cubicInOut(inverseLerp(0, 0.4, progress)))
 
-  // const pScale = clamp01(inverseLerp(0.25, 1, progress))
-  // const scale = easeInOutCubic(1 - pScale)
-  const scale = 1
+  const fontSize = lerp(
+    25,
+    20,
+    clamp01(eases.cubicInOut(inverseLerp(0, 0.2, progress)))
+  )
 
-  // const pOpacity = clamp01(inverseLerp(0.25, 1, progress))
-  // const opacity = easeInOutCubic(1 - pOpacity)
-  const opacity = 1
+  const opacity = lerp(
+    1,
+    0.5,
+    clamp01(eases.cubicInOut(inverseLerp(0.1, 0.3, progress)))
+  )
+
+  const xPos = lerp(
+    100,
+    0,
+    clamp01(eases.cubicInOut(inverseLerp(0.3, 0.4, progress)))
+  )
+
+  const andOpacity = clamp01(eases.cubicInOut(inverseLerp(0.35, 0.4, progress)))
 
   return html`
-  <div
-    style="
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      transform: translateY(${-yPos *
-      100}vh)
-    "
-  >
     <div
-      style="
+      style="position: relative; width: 100%; height: 100%; background-color: #000"
+    >
+      <div
+        style="
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: #fcd8da;
-      "
-    >
-        <img src="d-1.webp" style="width: 100%; height: 80%; object-fit: cover;">
-    </div>
-    <div
-      style="
-        font-size: 20vw;
-        transform: rotate(${rotate}deg) scale(${scale});
+        background-image: url(/d-1.webp);
+        background-position: 50% ${yPos * 100}%;
+        background-repeat: no-repeat;
+        background-size: auto ${100 + (1 - imgSize) * 100}%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
         opacity: ${opacity};
-      "
-    >
-      <div style="">Fox is 4!</div>
-      <div style="transform: rotate(180deg)">Lex is 2!</div>
+        "
+      ></div>
+      <div
+        style="
+        position: absolute;
+        top: ${75 - yPos * 75}vh;
+        color: hsl(0, 0%, 100%);
+        text-shadow: 2px 2px 0px black;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        font-size: ${fontSize}vw;
+        text-align: center;
+        "
+      >
+        <div>
+          <div class="pt2">
+            Join us
+            <br />
+            in the
+            <br />
+            forest
+            <br />
+            <span style="
+            font-size: 0.5em;
+            opacity: ${andOpacity};
+            ">
+            for
+            </span>
+          </div>
+        </div>
+        <div class="pt4">
+          <div
+            style="
+            transform: translateX(${xPos}vw);
+          "
+          >
+            Fox's 4th
+          </div>
+          <div style="
+            color: hsl(0, 0%, 100%);
+            font-size: 0.5em;
+            line-height: 2em;
+            text-shadow: 2px 2px 0px black;
+            opacity: ${andOpacity};
+            ">
+            &
+          </div>
+          <div
+            style="
+            transform: translateX(${-xPos}vw);
+          "
+          >
+            Lex's 2nd
+          </div>
+          <div style="
+            padding-top: 0.5em;
+            opacity: ${andOpacity};
+          ">
+            Birthday Party
+          </div>
+        </div>
       </div>
     </div>
   `
@@ -156,14 +206,8 @@ function joinUs (state) {
         width: 100vw;
     "
     >
-      
       <div
         style="
-        background-image: url(/mj-1.png);
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        opacity: ${opacity};
         width: 100%;
         height: 100%;
         position: absolute;
@@ -177,7 +221,7 @@ function joinUs (state) {
         transform: translateX(${xPos}vw) translateY(45vh);
       "
       >
-        <div style="color: hsl(0, 0%, ${light * 100}%)">Join us in the forest for...</div>
+        <div style="color: hsl(0, 0%, ${light * 100}%)">Fox's 4th</div>
       </div>
     </div>
   `
