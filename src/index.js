@@ -3,7 +3,7 @@ const morph = require('nanomorph')
 const eases = require('eases')
 const { lerp, clamp01, inverseLerp, fract } = require('canvas-sketch-util/math')
 
-const START_SCROLL = 0
+const START_SCROLL = 2800
 
 const scenes = [introText, details]
 
@@ -175,7 +175,7 @@ function introText (state) {
             transform: translateX(${xPos}vw);
           "
           >
-            Fox's 4th
+            Fox’s 4th
           </div>
           <div
             style="
@@ -193,7 +193,7 @@ function introText (state) {
             transform: translateX(${-xPos}vw);
           "
           >
-            Lex's 2nd
+            Lex’s 2nd
           </div>
           <div
             style="
@@ -210,74 +210,152 @@ function introText (state) {
 }
 
 function details (state) {
-  const { progress } = state
+  const { scroll } = state
 
-  const scale = clamp01(eases.cubicInOut(inverseLerp(0, 0.2, progress)))
+  const scale = lerp(
+    0.5,
+    1,
+    clamp01(eases.cubicInOut(inverseLerp(1500, 2700, scroll)))
+  )
+
+  const dateStart = new Date('2024-11-10T15:00:00')
+  const dateEnd = new Date('2024-11-10T18:00:00')
+
+  const directions = 'Cedar Grove is a beautiful, shaded spot in Griffith Park, accessible by a short (but quite steep) hike.  Park on Farmouth Drive, walk through the gate at the end of the street, and haul up the hill for 3 out-of-breath minutes.  (You’ll want a carrier for small kids.)'
+
+  const dressCode = 'Dress code is "Forest Creature". We do not discriminate against forest creatures of any kind.  Ghosts live in forests, as do witches, Disney Princesses, dinosaurs, bunny rabbits, and Pokemons.'
+
+  const whatToBring = 'No presents, please!\nPicnic blanket, drinks, bag for dino eggs.\nWe will have light snacks.'
+
+  const calDetails = [directions, dressCode, whatToBring].join('\n\n')
+
+  const location = 'Cedar Grove near 3961 Farmouth Dr, Los Angeles, CA 90027'
+
+  // 20231110T150000Z
+
+  const calendarLink = `https://www.google.com/calendar/render?action=TEMPLATE&text=Fox+and+Lex%27s+Birthday+Party&dates=${toGoogleDate(dateStart)}/${toGoogleDate(dateEnd)}&details=${encodeURIComponent(calDetails)}&location=${encodeURIComponent(location)}`
 
   return html`
-    <div style=
-    "
+    <div
+      style="
       position: absolute;
       z-index: 800;
       width: 100%;
       height: 100%;
       color: #000;
-      top: 0;  
+      top: 0;
+      transform: scale(${scale});
+      display: flex;
+      align-items: center;
+      justify-content: center;
     "
-    class="pa4"
+      class="pa4"
     >
-      <div class='tc pt2' style='
+      <div>
+        <div
+          class="tc "
+          style="
         font-size: 15vw;
         color: black;
         text-shadow: 2px 2px 0px hotpink;
-      '>
-        Fox and Lex's
-        <br />
-        Birthday Party
-      </div>
-      <div class='mt4'>
-        <div class='mb3' style='
-          font-size: 6vw;
-          color: white;
-          text-shadow: 2px 2px 0px hotpink;
-        '>When is it?</div>
-        <div style='font-size: 6vw;'>
-          Sunday, November 10th
+      "
+        >
+          Fox and Lex’s
           <br />
-          3:00 PM - 6:00 PM
+          Birthday Party
         </div>
-      </div>
-      <div class='mt4'>
-        <div class='mb3' style='
+        <div class="mt4">
+          <div
+            class="mb1"
+            style="
           font-size: 6vw;
           color: white;
           text-shadow: 2px 2px 0px hotpink;
-        '>Where is it?</div>
-        <div style='font-size: 6vw;'>
-          <a style='color: black; text-decoration: underline;' href='https://maps.app.goo.gl/3961FarmouthSt' target='_blank'>Cedar Grove</a>
+        "
+          >
+            When is it?
+          </div>
+          <div style="font-size: 6vw;">
+            <a href="${calendarLink}" target="_blank" style="color: black; text-decoration: underline;">
+              Sunday, November 10th
+              <br />
+              3:00 PM - 6:00 PM
+            </a>
+          </div>
         </div>
-      </div>
-      <div class='mt4'>
-        <div class='mb3' style='
+        <div class="mt4">
+          <div
+            class="mb1"
+            style="
           font-size: 6vw;
           color: white;
           text-shadow: 2px 2px 0px hotpink;
-        '>What is the dress code?</div>
-        <div style='font-size: 6vw;'>
-          Forest Creature
+        "
+          >
+            Where is it?
+          </div>
+          <div style="font-size: 6vw;">
+            <a
+              style="color: black; text-decoration: underline;"
+              href="https://maps.app.goo.gl/WXPLY8jVwcY73REG6"
+              target="_blank"
+              >Cedar Grove</a
+            >
+          </div>
         </div>
-      </div>
-      <div class='mt4'>
-        <div class='mb3' style='
+        <div class="mt4">
+          <div
+            class="mb1"
+            style="
           font-size: 6vw;
           color: white;
           text-shadow: 2px 2px 0px hotpink;
-        '>What should I bring?</div>
-        <div style='font-size: 6vw;'>
-          <p>Picnic blanket, drinks, bag for dino eggs.</p>
-          <p>We will have light snacks.</p>
+        "
+          >
+            What is the dress code?
+          </div>
+          <div style="font-size: 6vw;">Forest Creature</div>
+        </div>
+        <div class="mt4">
+          <div
+            class="mb1"
+            style="
+          font-size: 6vw;
+          color: white;
+          text-shadow: 2px 2px 0px hotpink;
+        "
+          >
+            What should I bring?
+          </div>
+          <div style="font-size: 6vw;">
+            <div>No presents, please!</div>
+            <div>Picnic blanket, drinks, bag for dino eggs.</div>
+            <div>We will have light snacks.</div>
+          </div>
+        </div>
+
+        <div class="mt4">
+          <div
+            class="mb1"
+            style="
+          font-size: 6vw;
+          color: white;
+          text-shadow: 2px 2px 0px hotpink;
+        "
+          >
+            Can you make it?
+          </div>
+          <div style="font-size: 6vw;">
+            <a href="https://forms.gle/3961FARmOuthSt" target="_blank">Yes</a>
+            -or-
+            <a href="https://forms.gle/3961FARmOuthSt" target="_blank">No</a>
+          </div>
         </div>
       </div>
     </div>
   `
+}
+
+function toGoogleDate (date) {
+  return new Date(date).toISOString().split('.')[0].replace(/\W*/g, '') + 'Z'
 }
