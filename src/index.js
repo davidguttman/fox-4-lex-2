@@ -1,9 +1,15 @@
 const html = require('nanohtml')
 const morph = require('nanomorph')
 const eases = require('eases')
-const { lerp, clamp01, inverseLerp, fract } = require('canvas-sketch-util/math')
+const {
+  lerp,
+  clamp,
+  clamp01,
+  inverseLerp,
+  fract
+} = require('canvas-sketch-util/math')
 
-const START_SCROLL = 2800
+const START_SCROLL = 0
 
 const scenes = [introText, details]
 
@@ -218,6 +224,8 @@ function details (state) {
     clamp01(eases.cubicInOut(inverseLerp(1500, 2700, scroll)))
   )
 
+  const top = clamp(2800 - scroll, 0, -window.innerHeight / 2)
+
   const dateStart = new Date('2024-11-10T15:00:00')
   const dateEnd = new Date('2024-11-10T18:00:00')
 
@@ -263,15 +271,41 @@ function details (state) {
     <div class="mt4">${toQuestionEl(question)} ${toAnswerEl(answer)}</div>
   `
 
+  const toButtonEl = ({ text, href, glow = false }) => {
+    const glowDuration = 2000
+    const alpha = glow
+      ? Math.sin((2 * Math.PI * Date.now()) / glowDuration) * 0.5 + 0.5
+      : 0
+
+    return html`
+      <a
+        href="${href}"
+        target="_blank"
+        style="
+      font-size: 6vw;
+      border: 1px solid black;
+      padding: 10px 20px;
+      border-radius: 5px;
+      color: black;
+      text-decoration: none;
+      box-shadow: 2px 2px 0px black;
+      background-color: rgba(255, 255, 255, ${alpha});
+    "
+      >
+        ${text}
+      </a>
+    `
+  }
+
   return html`
     <div
       style="
       position: absolute;
       z-index: 800;
       width: 100%;
-      height: 100%;
+      min-height: 100%;
       color: #000;
-      top: 0;
+      top: ${top}px;
       transform: scale(${scale});
       display: flex;
       align-items: center;
@@ -296,53 +330,88 @@ function details (state) {
         ${toSectionEl(
           'When is it?',
           html`
-            <a
-              href="${calendarLink}"
-              target="_blank"
-              style="color: black; text-decoration: underline;"
-            >
+            <div>
               Sunday, November 10th
               <br />
               3:00 PM - 6:00 PM
-            </a>
+              <br />
+              <a
+                href="${calendarLink}"
+                target="_blank"
+                style="color: black; text-decoration: underline;"
+              >
+                Add to Calendar
+              </a>
+            </div>
           `
         )}
-
         ${toSectionEl(
           'Where is it?',
           html`
-            <a
-              style="color: black; text-decoration: underline;"
-              href="https://maps.app.goo.gl/WXPLY8jVwcY73REG6"
-              target="_blank"
-              >Cedar Grove</a
+            <div>
+              <div>Cedar Grove</div>
+              <a
+                style="color: black; text-decoration: underline;"
+                href="https://maps.app.goo.gl/WXPLY8jVwcY73REG6"
+                target="_blank"
+                >View Map</a
+              >
+            </div>
             >
           `
         )}
-
-        
         ${toSectionEl(
           'What is the dress code?',
-          'Forest Creature'
+          html` <div>Forest Creature*</div> `
         )}
-
+        ${toSectionEl(
+          'What will we do?',
+          html`
+            <div>
+              Dinosaur-egg hunt
+              <br />
+              Toddler-friendly “hike”
+              <br />
+              Roly-poly hunt
+            </div>
+          `
+        )}
         ${toSectionEl(
           'What should I bring?',
           html`
-            <div>No presents, please!</div>
-            <div>Picnic blanket, drinks, bag for dino eggs.</div>
+            <div>Picnic blanket, drinks, bag for dinosaur eggs.</div>
             <div>We will have light snacks.</div>
+            <div>No presents, please!</div>
           `
         )}
-
         ${toSectionEl(
           'Can you make it?',
           html`
-            <a href="https://forms.gle/3961FARmOuthSt" target="_blank">Yes</a>
-            -or-
-            <a href="https://forms.gle/3961FARmOuthSt" target="_blank">No</a>
+            <div
+              class="mt4"
+              style="
+            display: flex;
+            justify-content: space-around;
+          "
+            >
+              ${toButtonEl({
+                text: 'Yes',
+                href: 'https://forms.gle/rLKDap14wptug6te8',
+                glow: true
+              })}
+              ${toButtonEl({
+                text: 'No',
+                href: 'https://forms.gle/rLKDap14wptug6te8'
+              })}
+            </div>
           `
         )}
+
+        <div class="mt4" style="font-size: 3vw; line-height: 4vw;">
+          *We do not discriminate against forest creatures of any kind. Ghosts
+          live in forests, as do witches, Disney Princesses, dinosaurs, bunny
+          rabbits, and Pokemons.
+        </div>
       </div>
     </div>
   `
