@@ -227,7 +227,7 @@ function details (state) {
     'Cedar Grove is a beautiful, shaded spot in Griffith Park, accessible by a short (but quite steep) hike.  Park on Farmouth Drive, walk through the gate at the end of the street, and haul up the hill for 3 out-of-breath minutes.  (You’ll want a carrier for small kids.)'
 
   const dressCode =
-    'Dress code is "Forest Creature". We do not discriminate against forest creatures of any kind.  Ghosts live in forests, as do witches, Disney Princesses, dinosaurs, bunny rabbits, and Pokemons.'
+    'Dress code is "Forest Creature". We do not discriminate against forest creatures of any kind.  Ghosts live in forests, as do witches, Disney princesses, dinosaurs, bunny rabbits, and Pokémons.'
 
   const whatToBring =
     'No presents, please!\nPicnic blanket, drinks, bag for dino eggs.\nWe will have light snacks.'
@@ -433,8 +433,8 @@ function details (state) {
 
         <div class="mt4 mw6" style="font-size: ${vwToPx('3vw')}; line-height: ${vwToPx('4vw')};">
           *We do not discriminate against forest creatures of any kind. Ghosts
-          live in forests, as do witches, Disney Princesses, dinosaurs, bunny
-          rabbits, and Pokemons.
+          live in forests, as do witches, Disney princesses, dinosaurs, bunny
+          rabbits, and Pokémons.
         </div>
       </div>
     </div>
