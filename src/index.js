@@ -334,12 +334,18 @@ function details (state) {
               3:00 PM - 6:00 PM
               <br />
               <div style="font-size: 0.7em;">
-              <a
+              Add to Calendar: <a
                 href="${calendarLink}"
                 target="_blank"
                 style="color: black; text-decoration: underline;"
               >
-                  Add to Calendar
+                Google
+                </a> - <a
+                href="/fox-lex-bday.ics"
+                target="_blank"
+                style="color: black; text-decoration: underline;"
+              >
+                Apple
                 </a>
               </div>
             </div>
