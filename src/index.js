@@ -220,8 +220,8 @@ function details (state) {
 
   const top = clamp(2800 - scroll, 0, -window.innerHeight / 2)
 
-  const dateStart = new Date('2024-11-10T15:00:00')
-  const dateEnd = new Date('2024-11-10T18:00:00')
+  const dateStart = new Date('2024-11-10T14:00:00')
+  const dateEnd = new Date('2024-11-10T17:00:00')
 
   const directions =
     'Cedar Grove is a beautiful, shaded spot in Griffith Park, accessible by a short (but quite steep) hike.  Park on Farmouth Drive, walk through the gate at the end of the street, and haul up the hill for 3 out-of-breath minutes.  (You’ll want a carrier for small kids.)'
@@ -331,7 +331,7 @@ function details (state) {
             <div>
               Sunday, November 10th
               <br />
-              3:00 PM - 6:00 PM
+              2:00 PM - 5:00 PM
               <br />
               <div style="font-size: 0.7em;">
               Add to Calendar: <a

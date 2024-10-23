@@ -39,11 +39,11 @@ CREATED:20241015T195620Z
 LOCATION:Cedar Grove near 3961 Farmouth Dr\, Los Angeles\, CA 90027
 SUMMARY:Fox and Lex's Birthday Party
 STATUS:CONFIRMED
-LAST-MODIFIED:20241015T195620Z
-DTEND;TZID=America/Los_Angeles:20241110T180000
+LAST-MODIFIED:20241023T205748Z
+DTEND;TZID=America/Los_Angeles:20241110T170000
 TRANSP:OPAQUE
 UID:5tbm93t44n2qfk3adiqcm10krn@google.com
-DTSTART;TZID=America/Los_Angeles:20241110T150000
+DTSTART;TZID=America/Los_Angeles:20241110T140000
 DESCRIPTION:Cedar Grove is a beautiful\, shaded spot in Griffith Park\, 
  accessible by a short (but quite steep) hike.  Park on Farmouth Drive\, 
  walk through the gate at the end of the street\, and haul up the hill for 
@@ -53,12 +53,12 @@ DESCRIPTION:Cedar Grove is a beautiful\, shaded spot in Griffith Park\,
  Disney Princesses\, dinosaurs\, bunny rabbits\, and Pokemons.\n\nNo 
  presents\, please!\nPicnic blanket\, drinks\, bag for dino eggs.\nWe will 
  have light snacks.
-DTSTAMP:20241015T195620Z
+DTSTAMP:20241023T205748Z
 SEQUENCE:1
 X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
 BEGIN:VALARM
-UID:60C58663-76D2-4108-B014-38A85E025E10
-X-WR-ALARMUID:60C58663-76D2-4108-B014-38A85E025E10
+UID:A5E7DD7C-6DA1-4C07-9C62-5B916465CD17
+X-WR-ALARMUID:A5E7DD7C-6DA1-4C07-9C62-5B916465CD17
 TRIGGER:-PT10M
 ACTION:DISPLAY
 DESCRIPTION:This is an event reminder
